@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Adder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            /* Set width to 100% for responsiveness */
+            margin-bottom: 16px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #dd4545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+        }
+
+        .popup {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .error {
+            background-color: #ff7f7f;
+            color: #fff;
+            border: 1px solid #ff5252;
+        }
+
+        .success {
+            background-color: #94eb8c;
+            color: #2c6227;
+            border: 1px solid #5cb65e;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            float: right;
+            font-weight: bold;
+        }
+
+        /* Hover effect for close button */
+        .close-btn:hover {
+            color: #555;
+        }
+
+        /* Animation for the popup */
+        .popup.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <table id="itemTable">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Type</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Items will be added here dynamically -->
+            <tr>
+                <td><input type="text" id="itemName" list="itemSuggestions" autocomplete="off">
+                    <datalist id="itemSuggestions">
+                        <option value="T-shirt">
+                        <option value="Jeans">
+                        <option value="Shoes">
+                            <!-- Add more items as needed -->
+                    </datalist>
+                </td>
+                <td><select id="itemType">
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <!-- Add more sizes as needed -->
+                    </select></td>
+                <td><input type="number" id="itemCount" min="1"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" onclick="addItem()">Add Item</button>
+    <br><br>
+    <form action="/500" method="get">
+        <input type="hidden" name="list" value=>
+        <button type="submit">Submit List</button>
+    </form>
+
+    <script>
+        var list = []
+        function addItem() {
+            var itemName = document.getElementById("itemName").value;
+            var itemType = document.getElementById("itemType").value;
+            var itemCount = document.getElementById("itemCount").value;
+            if (!(itemName && itemCount && itemType)) {
+                showError("Incomplete item!");
+                return;
+            }
+            list.push({ name: itemName, type: itemType, count: itemCount })
+            var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length - 1);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+
+            console.log(list);
+            cell1.innerHTML = itemName;
+            cell2.innerHTML = itemType;
+            cell3.innerHTML = itemCount;
+
+            // Clear the form fields
+            document.getElementById("itemName").value = "";
+            document.getElementById("itemType").value = "";
+            document.getElementById("itemCount").value = "";
+        }
+
+        function showMessage(type, message) {
+            // Create a new popup element
+            var popup = document.createElement('div');
+            popup.classList.add('popup', type);
+
+            // Create a close button
+            var closeButton = document.createElement('span');
+            closeButton.classList.add('close-btn');
+            closeButton.innerHTML = 'x';
+
+            // Append the close button and message to the popup
+            popup.appendChild(closeButton);
+            popup.innerHTML += message;
+
+            // Append the popup to the body
+            document.body.appendChild(popup);
+
+            // Trigger reflow to enable the animation
+            void popup.offsetWidth;
+
+            // Show the popup
+            popup.classList.add('show');
+
+            // Set a timer to remove the popup after 2 seconds
+            setTimeout(function () {
+                popup.classList.remove('show');
+                setTimeout(function () {
+                    popup.remove();
+                }, 300);
+            }, 2000);
+
+            // Add an event listener to remove the popup when the close button is clicked
+            closeButton.addEventListener('click', function () {
+                popup.classList.remove('show');
+                setTimeout(function () {
+                    popup.remove();
+                }, 300);
+            });
+        }
+
+        function showError(message) {
+            showMessage('error', message);
+        }
+
+        function showSuccess(message) {
+            showMessage('success', message);
+        }
+    </script>
+
+</body>
+
+</html>

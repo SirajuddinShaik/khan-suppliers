@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Adder</title>
+    <link rel="stylesheet" href="/css/adder.css">
+
+</head>
+
+<body>
+
+    <h1>Add Or Update Details...</h1>
+    <div class="customer-form">
+        <!-- Customer form -->
+        <div class="container">
+
+            <div class="matrix-cell">
+                <!-- First cell content goes here -->
+                <form class="customer-form" action="" method="post">
+                    <h2>Add New Item</h2><br>
+                    <h4>English Name</h4>
+                    <input type="text" id="EName" name="EName" autocomplete="off" required>
+                    <h4>Telugu Name</h4>
+                    <input type="text" id="TName" name="TName" autocomplete="off" required>
+
+                    <h4>Type</h4>
+                    <input type="text" id="itemType" name="itemType" required>
+                    <h4>Cost</h4>
+                    <input type="number" name="itemCost" id="itemCost" min="1" required>
+                    <input type="number" name="operation" value=0 hidden>
+                    <button type="submit">Add New Item</button>
+                </form>
+            </div>
+
+            <div class="matrix-cell">
+                <!-- Second cell content goes here -->
+                <form class="customer-form" action="" method="post">
+                    <h2>Update Existing list</h2><br>
+                    <h4>Item Name</h4>
+                    <input type="text" id="itemName" list="itemSuggestions" autocomplete="off" required>
+                    <datalist id="itemSuggestions">
+                        <option value="T-shirt">
+                        <option value="Jeans">
+                        <option value="Shoes">
+                            <!-- Add more items as needed -->
+                    </datalist>
+                    <h4>Type</h4>
+                    <select id="itemType" required>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <!-- Add more sizes as needed -->
+                    </select>
+                    <h4>Cost</h4>
+                    <input type="number" name="itemCost" id="itemCost" min="1" required>
+                    <input type="number" name="operation" value=1 hidden>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

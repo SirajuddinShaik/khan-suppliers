@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Adder</title>
+    <link rel="stylesheet" href="/css/adder.css">
+
+</head>
+
+<body>
+    <input type="text" id="items" value="<%= items1  %>" hidden>
+    <input type="text" id="type" value="<%= type  %>" hidden>
+    <% if(type===1){ %>
+        <input type="text" name="" id="list" value="<%= details %>">
+        <% } %>
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Type</th>
+                        <th>Count</th>
+                        <th>Add/Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items will be added here dynamically -->
+                    <tr>
+                        <td><input type="text" onchange="changeOptions()" id="itemName" list="itemSuggestions"
+                                autocomplete="off">
+                            <datalist id="itemSuggestions">
+                                <% Object.entries(items).forEach(([key, value])=> { %>
+                                    <option value=<%=value.names[0]+"-"+value.names[1] %>>
+                                        <%});%>
+                            </datalist>
+                        </td>
+                        <td><select id="itemType">
+
+                            </select></td>
+                        <td><input type="number" id="itemCount" min="1"></td>
+                        <td>
+                            <button style="position: relative;bottom: .5rem;" type="button" onclick="addItem()">Add
+                                Item</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <h1>Customer Details...</h1>
+            <form class="customer-form" method="post">
+                <!-- Customer form -->
+                <div class="container">
+
+                    <div class="matrix-cell">
+                        <div class="customer-form">
+                            <label for="customerName">Customer Name:</label>
+                            <input type="text" id="customerName" name="customerName" required>
+
+                            <label for="eventDate">Event Date:</label>
+                            <input type="date" id="eventDate" name="eventDate" required>
+                        </div>
+                    </div>
+
+                    <div class="matrix-cell">
+                        <!-- Second cell content goes here -->
+                        <div class="customer-form">
+                            <label for="mobileNumber">Mobile Number:</label>
+                            <input type="tel" id="mobileNumber" name="mobileNumber" required>
+
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" name="list" id="list" value="[]" hidden>
+                <button type="submit">Submit List</button>
+
+            </form>
+
+            <script>
+                let items = JSON.parse(document.getElementById("items").value);
+                let details = {}
+                if (document.getElementById('type') === "1") {
+                    details = JSON.parse(document.getElementById("details").value)
+                }
+                let list = [];
+                var itemCount = 0;
+                function removeItem(rowIndex) {
+                    var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+
+                    // Remove the item from the list based on the index
+                    list.splice(rowIndex - 1, 1);
+                    // Update the data variable with the modified list
+                    updatedata();
+                    updateTable();
+                }
+
+                function updateTable() {
+                    var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+                    while (table.rows.length > 1) {
+                        table.deleteRow(0);
+                    }
+                    for (var i = 0; i < list.length; i++) {
+                        var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+                        var newRow = table.insertRow(table.rows.length - 1);
+                        var cell1 = newRow.insertCell(0);
+                        var cell2 = newRow.insertCell(1);
+                        var cell3 = newRow.insertCell(2);
+                        var cell4 = newRow.insertCell(3);
+
+                        cell1.innerHTML = list[i]["name"];
+                        cell2.innerHTML = list[i]["type"];
+                        cell3.innerHTML = list[i]["count"];
+                        var removeButton = document.createElement('button');
+                        removeButton.innerHTML = 'Remove';
+                        removeButton.onclick = function () {
+                            removeItem(newRow.rowIndex);
+                        };
+                        cell4.appendChild(removeButton);
+                    }
+                }
+
+                function showMessage(type, message) {
+                    // Create a new popup element
+                    var popup = document.createElement('div');
+                    popup.classList.add('popup', type);
+
+                    // Create a close button
+                    var closeButton = document.createElement('span');
+                    closeButton.classList.add('close-btn');
+                    closeButton.innerHTML = 'x';
+
+                    // Append the close button and message to the popup
+                    popup.appendChild(closeButton);
+                    popup.innerHTML += message;
+
+                    // Append the popup to the body
+                    document.body.appendChild(popup);
+
+                    // Trigger reflow to enable the animation
+                    void popup.offsetWidth;
+
+                    // Show the popup
+                    popup.classList.add('show');
+
+                    // Set a timer to remove the popup after 2 seconds
+                    setTimeout(function () {
+                        popup.classList.remove('show');
+                        setTimeout(function () {
+                            popup.remove();
+                        }, 300);
+                    }, 2000);
+
+                    // Add an event listener to remove the popup when the close button is clicked
+                    closeButton.addEventListener('click', function () {
+                        popup.classList.remove('show');
+                        setTimeout(function () {
+                            popup.remove();
+                        }, 300);
+                    });
+                }
+
+                function showError(message) {
+                    // Use EJS syntax to pass the message to the client-side JavaScript
+                    showMessage('error', message);
+                }
+
+                function showSuccess(message) {
+                    // Use EJS syntax to pass the message to the client-side JavaScript
+                    showMessage('success', message);
+                }
+                function addItem() {
+                    var itemName = document.getElementById("itemName").value;
+                    var itemType = document.getElementById("itemType").value;
+                    var itemCount = document.getElementById("itemCount").value;
+                    if (!(itemName && itemCount && itemType)) {
+                        showError("Incomplete item!");
+                        return;
+                    }
+                    list.push({ name: itemName, type: itemType, count: itemCount })
+
+                    // Clear the form fields
+                    document.getElementById("itemName").value = "";
+                    document.getElementById("itemType").value = "";
+                    document.getElementById("itemCount").value = "";
+
+                    updatedata();
+                    updateTable();
+                }
+                function updatedata() {
+                    document.getElementById("list").value = JSON.stringify(list)
+                }
+
+                function changeOptions(e) {
+                    // Your logic to determine the new options
+                    const inputValue = document.getElementById("itemName").value.split("-")[0];
+                    const selectElement = document.getElementById("itemType");
+                    try {
+                        const newOptions = items[inputValue].types;
+                        selectElement.options.length = 0;
+                        newOptions.forEach(optionValue => {
+                            const optionElement = document.createElement("option");
+                            optionElement.value = optionValue;
+                            optionElement.textContent = optionValue;
+                            selectElement.appendChild(optionElement);
+                        });
+                    } catch (error) {
+                        const optionElement = document.createElement("option");
+                        optionElement.textContent = "No item";
+                        selectElement.appendChild(optionElement);
+                        console.log(error);
+                    }
+
+
+                }
+            </script>
+</body>
+
+</html>
+
+require("dotenv").config();
+const express = require("express");
+const bodyParser = require("body-parser");
+// const mongoose = require("mongoose");
+const _ = require("lodash");
+const path = require("path");
+const bcrypt = require("bcrypt");
+const { Console, log } = require("console");
+const { type } = require("os");
+const salts = 10;
+
+const app = express();
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+const mongoose = require("mongoose");
+
+const uri =
+"mongodb+srv://test:1234@project.lzqdkln.mongodb.net/?retryWrites=true&w=majority";
+mongoose
+.connect(uri)
+.then(() => {
+console.log("Connected to MongoDB Atlas!");
+})
+.then(() => {
+updateDb();
+})
+.catch((error) => {
+console.error("Error connecting to MongoDB Atlas:", error.message);
+});
+
+const securitySchema = mongoose.Schema({
+securityKey: String,
+_id: String,
+});
+
+const countSchema = mongoose.Schema({
+_id: {
+type: String,
+required: true,
+},
+name: {
+type: String,
+required: true,
+},
+count: {
+type: Number,
+required: true,
+},
+});
+
+const itemSchema = mongoose.Schema({
+_id: {
+type: String,
+required: true,
+},
+TName: {
+type: String,
+required: true,
+},
+EName: {
+type: String,
+required: true,
+},
+type: {
+type: String,
+required: true,
+},
+cost: {
+type: Number,
+required: true,
+},
+});
+
+const listItemSchema = mongoose.Schema({
+name: {
+type: String,
+required: true,
+},
+type: {
+type: String,
+required: true,
+},
+count: {
+type: Number,
+required: true,
+},
+});
+
+const listSchema = mongoose.Schema({
+_id: {
+type: String,
+required: true,
+},
+list: {
+type: [listItemSchema],
+required: true,
+},
+address: {
+type: String,
+required: true,
+},
+mobile: {
+type: Number,
+required: true,
+},
+date: {
+type: String,
+required: true,
+},
+name: {
+type: String,
+required: true,
+},
+});
+
+const Security = mongoose.model("security", securitySchema);
+const Item = mongoose.model("item", itemSchema);
+const List = mongoose.model("pendinglist", listSchema);
+const Counter = mongoose.model("counter", countSchema);
+let items = {};
+let pending_lists = [];
+const updateDb = () => {
+return Promise.all([
+Item.find({})
+.then((items) => {
+items.forEach((item) => {
+if (item.EName in items) {
+items[item.EName].types.push(item.type);
+} else {
+items[item.EName] = {
+names: [item.EName, item.TName],
+types: [item.type],
+};
+}
+});
+})
+.catch((e) => {
+console.log("cannot find", e);
+}),
+List.find({})
+.then((lists) => {
+pending_lists = lists;
+})
+.catch((err) => {
+console.log(err);
+}),
+]);
+};
+
+// Usage
+updateDb()
+.then(() => {
+console.log(pending_lists);
+})
+.catch((error) => {
+console.error("Error:", error);
+});
+
+app
+.route("/")
+.get((req, res) => {
+const currentDate = new Date();
+
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1;
+res.render("home", {
+lists: pending_lists,
+today: { m: currentMonth, y: currentYear },
+});
+})
+.post((req, res) => {
+const list = JSON.parse(req.body.list);
+console.log(list[0]["name"]);
+});
+
+app
+.route("/add-list")
+.get((req, res) => {
+updateDb();
+res.render("adder", {
+type: 0,
+items: items,
+items1: JSON.stringify(items),
+});
+})
+.post((req, res) => {
+const list = JSON.parse(req.body.list);
+const customerName = req.body.customerName;
+const eventDate = req.body.eventDate;
+const address = req.body.address;
+const mobile = req.body.mobileNumber;
+console.log(eventDate);
+Counter.findById("pending-list")
+.then((doc) => {
+const found = Counter.findByIdAndUpdate(
+{ _id: "pending-list" },
+{
+$set: {
+count: doc.count + 1,
+},
+}
+);
+found.exec();
+if (found) {
+new List({
+_id: doc.count + 1,
+list: list,
+name: customerName,
+date: eventDate,
+address: address,
+mobile: mobile,
+}).save();
+}
+})
+.catch((err) => {
+console.log(err);
+});
+
+res.redirect("/add-list");
+});
+
+app
+.route("/home/AddOrUpdate")
+.get((req, res) => {
+res.render("update-add");
+})
+.post((req, res) => {
+const TName = req.body.TName;
+const EName = req.body.EName;
+const type = req.body.itemType;
+const cost = req.body.itemCost;
+if (req.body.operation === "0") {
+Counter.findById("item")
+.then((doc) => {
+const found = Counter.findByIdAndUpdate(
+{ _id: "item" },
+{
+$set: {
+count: doc.count + 1,
+},
+}
+);
+found.exec();
+if (found) {
+}
+new Item({
+_id: doc.count + 1,
+TName: TName,
+EName: EName,
+type: type,
+cost: cost,
+}).save();
+console.log("hlo");
+})
+.catch((err) => {
+console.log(err);
+});
+}
+});
+
+app
+.route("/bill")
+.post((req, res) => {})
+.get((req, res) => {
+var bill;
+var details;
+List.findById(100008)
+.then((doc) => {
+details = {
+billNo: doc._id,
+address: doc.address,
+mobile: doc.mobile,
+date: doc.date.split("-").reverse().join("-"),
+name: doc.name,
+};
+bill = [];
+total = 0;
+
+// Create an array of promises
+const promises = doc.list.map((i) => {
+let names = i.name.split("-");
+return Item.find({ EName: names[0], type: i.type })
+.then((found) => {
+let data = [
+names[0],
+names[1],
+i.type,
+i.count * found[0].cost,
+i.count,
+found[0].cost,
+];
+total = total + i.count * found[0].cost;
+bill.push(data);
+})
+.catch((err) => {
+console.log(err);
+});
+});
+
+return Promise.all(promises);
+})
+.then(() => {
+console.log(bill);
+console.log(details);
+res.render("bill", {
+language: 1,
+details: details,
+bill: bill,
+total: total,
+});
+})
+.catch((err) => {
+console.log(err);
+});
+});
+
+app.route("/admin/:billno").get((req, res) => {
+List.find({ _id: req.params.billno }).then((docs) => {
+res.render("adder", {
+type: 1,
+details: JSON.stringify(docs),
+items: items,
+items1: JSON.stringify(items),
+});
+});
+});
+
+app.listen(3000, function () {
+console.log("Server live at port:3000");
+});

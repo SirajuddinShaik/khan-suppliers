@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .bill-info {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="/images/black.png" style="height: 5rem;" alt="Khan Suppliers Logo" class="logo">
+        <h1>Khan Suppliers</h1>
+        <p>123 Main Street, Cityville, Country</p>
+        <p>Mobile no: Your Mobile Number</p>
+    </header>
+
+    <table>
+        <tr>
+            <th>Bill Number:</th>
+            <td>
+                <%= details.billNo %>
+            </td>
+            <th>Date:</th>
+            <td>
+                <%= details.date %>
+            </td>
+        </tr>
+        <tr>
+            <th>Customer Name:</th>
+            <td>
+                <%= details.name %>
+            </td>
+            <th>Customer Contact:</th>
+            <td>
+                <%= details.mobile %>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Type</th>
+                <th>Count</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% bill.forEach(i=> { %>
+                <tr>
+                    <td>
+                        <%= i[language] %>
+                    </td>
+                    <td>
+                        <%= i[2] %>
+                    </td>
+                    <td>
+                        <%= i[4] %>
+                    </td>
+                    <td>₹<%= i[3] %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+
+    <div class="total">
+        <label>Total:</label>
+        <span>₹<%= total %>.00</span>
+    </div>
+
+</body>
+
+</html>

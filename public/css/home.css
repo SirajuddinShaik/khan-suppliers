@@ -1,0 +1,225 @@
+#title{
+    background-color: #e75353;
+    padding: 3rem 5rem 0rem 5rem ;
+    padding-bottom: 0;
+    border-radius: 3rem 0rem 0 0;
+    
+}
+p{
+    color: #8f8f8f;
+    text-align: center;
+    
+}
+
+h1{
+    font-family: "Montserrat";
+    
+}
+
+body{
+    font-family: "Montserrat";
+    border-style: none;
+    text-align: center;
+    border-left: 7rem;
+    padding: 0rem 5% 0 5%;
+}
+      /* NavBar */
+.navbar-brand{
+    font-size: 3rem;
+    font-family: "ubuntu"; 
+    font-weight: 500;
+    font-weight: bold;
+}
+#navabar{
+    padding-bottom: 3rem;
+    padding-right: 5rem;
+}
+.nav-item{
+    font-family: "Montserrat";
+    font-size: 1.2rem;
+    padding: 0rem 1.5rem;
+}
+.nav-link{
+    font-size: 4rem;
+}
+.btn{
+    display: inline;
+}
+
+
+#title-img{
+    width: 100%;
+    align-items: center;
+    padding-right: 0 13%;
+    position: relative;
+    padding-bottom: 2rem;
+    border-radius: 2rem 2rem 4rem 4rem;
+}
+
+
+#features{
+    padding: 3rem 0 ;
+    border-width: 1rem;
+    background-color: white;
+    text-align: center;
+}
+.feat{
+    font-size: 4.5rem;
+    color: #f87171;
+}
+:hover.feat{
+    color: #e75353;
+}
+
+
+.carousel-inner{
+    border-radius: 10%;
+    height: 30rem;
+}
+
+.quotations{
+    text-align: center;
+}
+
+.fivedot{
+    position: absolute;
+    left: 47%;
+    border: dotted;
+    border-bottom: none;
+    width: 6%;
+    border-color: rgb(238, 64, 101);
+    border-width: 0.7rem;
+}
+
+footer{
+    padding: 5%;
+    text-align: center;
+    background-color: white;
+}
+#footer{
+    color: black;
+}
+
+.links{
+    color: rgb(89, 98, 105);
+}
+
+.login{
+    padding-top: 1rem;
+}
+
+.centered {
+    padding-top: 200px;
+    text-align: center;
+}
+
+.secret-text {
+  text-align: center;
+  font-size: 2rem;
+  color: #fff;
+  background-color: #000;
+}
+
+
+.varible{
+    padding:15% 35%;
+}
+.top{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.middle{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.bottom{
+    
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+}
+
+.profile-element{
+    display: inline-block;
+    margin-right: 4rem;
+}
+
+.profile-img{
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+}
+
+.profile-element-top{
+    display: inline-block;
+    margin-right: 4rem;
+}
+
+.card-details{
+    border-style: solid;
+    border-color: #f08c8c;
+    border-width: .35rem;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #f87171;
+    color: #492e2e;
+    
+}
+
+
+
+:hover.card-details{
+    background-color: #e75353;
+    color: #ffffff;
+}
+
+
+#students{
+    background-color: white;
+    padding: 1rem;
+}
+.student-ele{
+    display: inline-block;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+
+
+.student-profile .card {
+    border-radius: 10px;
+  }
+  
+  .student-profile .card .card-header .profile_img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 10px solid #ccc;
+    border-radius: 50%;
+  }
+  
+  .student-profile .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .student-profile .card p {
+    font-size: 16px;
+    color: #000;
+  }
+  
+  .student-profile .table th,
+  .student-profile .table td {
+    font-size: 14px;
+    padding: 5px 10px;
+    color: #000;
+  }
+
+
+  .profile-btn{
+    text-align: center;
+    display: inline-block;
+    padding: 1rem;
+  }
