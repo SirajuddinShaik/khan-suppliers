@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 // const mongoose = require("mongoose");
 const _ = require("lodash");
 const path = require("path");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const { Console, log } = require("console");
 const { type } = require("os");
 const salts = 10;
@@ -295,100 +295,98 @@ app
     }
   });
 
-app
-  .route("/changepassword")
-  .get(function (req, res) {
-    res.render("changePW");
-  })
-  .post(function (req, res) {
-    let ch = req.body.type;
-    let username = req.body.username;
-    let currentPass = req.body.currentPass;
-    let newPass = req.body.newPass;
-    let confirmPass = req.body.confirmNewPass;
-    // console.log("suc",newPass,confirmPass);
-    if (newPass === confirmPass) {
-      switch (ch) {
-        case "1":
-          Admin.findOne({ username: username }, function (err, found) {
-            if (found) {
-              bcrypt.compare(
-                currentPass,
-                found.password,
-                function (err1, result) {
-                  if (result) {
-                    bcrypt.hash(newPass, salts, function (err2, hash) {
-                      found.password = hash;
-                      found.save();
-                      res.redirect("/admin/" + found.username);
-                    });
-                  } else {
-                    res.redirect("/changepassword");
-                  }
-                }
-              );
-            } else {
-              res.redirect("/changepassword");
-            }
-          });
-          break;
+app.route("/changepassword").get(function (req, res) {
+  res.render("changePW");
+});
+// .post(function (req, res) {
+//   let ch = req.body.type;
+//   let username = req.body.username;
+//   let currentPass = req.body.currentPass;
+//   let newPass = req.body.newPass;
+//   let confirmPass = req.body.confirmNewPass;
+//   // console.log("suc",newPass,confirmPass);
+//   if (newPass === confirmPass) {
+//     switch (ch) {
+//       case "1":
+//         Admin.findOne({ username: username }, function (err, found) {
+//           if (found) {
+//             bcrypt.compare(
+//               currentPass,
+//               found.password,
+//               function (err1, result) {
+//                 if (result) {
+//                   bcrypt.hash(newPass, salts, function (err2, hash) {
+//                     found.password = hash;
+//                     found.save();
+//                     res.redirect("/admin/" + found.username);
+//                   });
+//                 } else {
+//                   res.redirect("/changepassword");
+//                 }
+//               }
+//             );
+//           } else {
+//             res.redirect("/changepassword");
+//           }
+//         });
+//         break;
 
-        case "2":
-          Counseller.findOne({ username: username }, function (err, found) {
-            if (found) {
-              bcrypt.compare(
-                currentPass,
-                found.password,
-                function (err1, result) {
-                  if (result) {
-                    bcrypt.hash(newPass, salts, function (err2, hash) {
-                      found.password = hash;
-                      found.save();
-                      res.redirect("/counseller/" + found.username);
-                    });
-                  } else {
-                    res.redirect("/changepassword");
-                  }
-                }
-              );
-            } else {
-              res.redirect("/changepassword");
-            }
-          });
-          break;
+//       case "2":
+//         Counseller.findOne({ username: username }, function (err, found) {
+//           if (found) {
+//             bcrypt.compare(
+//               currentPass,
+//               found.password,
+//               function (err1, result) {
+//                 if (result) {
+//                   bcrypt.hash(newPass, salts, function (err2, hash) {
+//                     found.password = hash;
+//                     found.save();
+//                     res.redirect("/counseller/" + found.username);
+//                   });
+//                 } else {
+//                   res.redirect("/changepassword");
+//                 }
+//               }
+//             );
+//           } else {
+//             res.redirect("/changepassword");
+//           }
+//         });
+//         break;
 
-        case "3":
-          Student.findOne({ username: username }, function (err, found) {
-            if (found) {
-              bcrypt.compare(
-                currentPass,
-                found.password,
-                function (err1, result) {
-                  if (result) {
-                    bcrypt.hash(newPass, salts, function (err2, hash) {
-                      found.password = hash;
-                      found.save();
-                      res.redirect("/student/" + found.username);
-                    });
-                  } else {
-                    res.redirect("/changepassword");
-                  }
-                }
-              );
-            } else {
-              res.redirect("/changepassword");
-            }
-          });
-          break;
+//       case "3":
+//         Student.findOne({ username: username }, function (err, found) {
+//           if (found) {
+//             bcrypt.compare(
+//               currentPass,
+//               found.password,
+//               function (err1, result) {
+//                 if (result) {
+//                   bcrypt.hash(newPass, salts, function (err2, hash) {
+//                     found.password = hash;
+//                     found.save();
+//                     res.redirect("/student/" + found.username);
+//                   });
+//                 } else {
+//                   res.redirect("/changepassword");
+//                 }
+//               }
+//             );
+//           } else {
+//             res.redirect("/changepassword");
+//           }
+//         });
+//         break;
 
-        default:
-          res.redirect("/changepassword");
-          break;
-      }
-    } else {
-      res.redirect("/changepassword");
-    }
-  });
+//       default:
+//         res.redirect("/changepassword");
+//         break;
+//     }
+//   } else {
+//     res.redirect("/changepassword");
+//   }
+// });
 app
   .route("/admin/bill/:billno")
   .post((req, res) => {})
