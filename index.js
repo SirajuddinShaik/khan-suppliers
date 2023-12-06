@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const mongoose = require("mongoose");
 let Authenticated = false;
 mongoose
-  .connect(process.env.KEY)
+  .connect(process.env.uri)
   .then(() => {
     console.log("Connected to MongoDB Atlas!");
   })
